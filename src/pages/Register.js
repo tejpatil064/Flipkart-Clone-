@@ -1,31 +1,16 @@
+import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import loginimage from "../images/loginimage.png";
-
-// Simulated API calls
-const api = {
-  requestOtp: async (email) => {
-    // Simulating API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return { success: true };
-  },
-  verifyOtp: async (email, otp) => {
-    // Simulating API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return { success: true };
-  },
-  register: async (email) => {
-    // Simulating API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return { success: true };
-  },
-};
 
 const Register = () => {
-  const [isOtpVisible, setIsOtpVisible] = useState(false);
-  const [emailAddress, setEmailAddress] = useState("");
-  const [name, setName] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [otp, setOtp] = useState("");
+  const [userOTP, setUserOTP] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -36,23 +21,35 @@ const Register = () => {
   };
 
   const handleRequestOtp = async () => {
-    if (!name) {
+    if (!formData.name) {
       setError("Please enter your name");
       return;
     }
-    if (!validateEmail(emailAddress)) {
+    if (!validateEmail(formData.email)) {
       setError("Please enter a valid email address");
       return;
     }
 
     setIsLoading(true);
     setError(null);
+    setSuccess(null);
 
     try {
-      const response = await api.requestOtp(emailAddress);
-      if (response.success) {
-        setIsOtpVisible(true);
+      const response = await axios.post(
+        "http://localhost:3000/api/request-otp",
+        {
+          email: formData.email,
+          name: formData.name,
+        }
+      );
+
+      if (response.data.success) {
         setSuccess("OTP sent successfully. Please check your email.");
+        setOtp(response.data.otp);
+        // Instead of document.getElementById, use React state to manage modal
+        setIsVerified(true); // Reset isVerified in case the user needs to input OTP again
+      } else {
+        setError("Failed to send OTP. Please try again.");
       }
     } catch (err) {
       setError("Failed to send OTP. Please try again.");
@@ -62,11 +59,11 @@ const Register = () => {
   };
 
   const handleRegister = async () => {
-    if (!name) {
+    if (!formData.name) {
       setError("Please enter your name");
       return;
     }
-    if (!validateEmail(emailAddress)) {
+    if (!validateEmail(formData.email)) {
       setError("Please enter a valid email address");
       return;
     }
@@ -75,20 +72,20 @@ const Register = () => {
       setError("Please enter the OTP");
       return;
     }
+    console.log(otp, userOTP);
+    if (otp != userOTP) {
+      setError("Invalid OTP. Please try again.");
+      return;
+    }
 
+    setIsVerified(true);
     setIsLoading(true);
     setError(null);
+    setSuccess(null);
 
     try {
-      const verifyResponse = await api.verifyOtp(emailAddress, otp);
-      if (verifyResponse.success) {
-        const registerResponse = await api.register(emailAddress);
-        if (registerResponse.success) {
-          setSuccess("Registration successful! You can now log in.");
-        }
-      } else {
-        setError("Invalid OTP. Please try again.");
-      }
+      // You can now add the registration logic here, such as sending form data to the backend.
+      // For example, POST the form data along with the OTP for final verification.
     } catch (err) {
       setError("Registration failed. Please try again.");
     } finally {
@@ -96,17 +93,8 @@ const Register = () => {
     }
   };
 
-  const handleContinueClick = () => {
-    if (isOtpVisible) {
-      handleRegister();
-    } else {
-      handleRequestOtp();
-    }
-  };
-
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Main Container to Center the Form */}
       <div className="flex flex-grow justify-center items-start py-2 px-6 mt-14 h-auto">
         <div className="flex w-full max-w-[800px] bg-white rounded-lg shadow-lg h-auto">
           {/* Left Section */}
@@ -119,7 +107,7 @@ const Register = () => {
             </p>
             <div className="w-42 justify-end items-end mt-32 mb-16">
               <img
-                src={loginimage || "/placeholder.svg"}
+                src={"/images/loginimage.png" || "/placeholder.svg"}
                 alt="Login illustration"
                 className="w-full"
               />
@@ -136,8 +124,10 @@ const Register = () => {
                 type="text"
                 placeholder="Enter Your Name"
                 className="w-full h-12 p-3 border-b border-gray-300 rounded mb-4 hover:border-blue-500 focus:border-blue-500"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
               />
               <h2 className="text-sm font-normal text-gray-500 mb-2">
                 Enter Email address
@@ -145,21 +135,31 @@ const Register = () => {
               <input
                 type="email"
                 placeholder="Enter Email address"
-                className="w-full h-12 p-3 border-b border-gray-300 rounded mb-4 hover:border-blue-500 focus:border-blue-500"
-                value={emailAddress}
-                onChange={(e) => setEmailAddress(e.target.value)}
+                className="w-full h-12 p-3 border-b border-gray-300 rounded hover:border-blue-500 focus:border-blue-500"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
               />
-              {isOtpVisible && (
+              <div className="flex items-center justify-between mt-4">
+                <button
+                  className="w-full bg-blue-500 text-white font-normal mb-4 py-3 rounded"
+                  onClick={handleRequestOtp}
+                >
+                  Verify Email
+                </button>
+              </div>
+              {otp !== "" && (
                 <>
                   <h2 className="text-sm font-normal text-gray-500 mb-2">
                     Enter OTP
                   </h2>
                   <input
                     type="text"
-                    placeholder="Enter OTP"
+                    placeholder="Enter The OTP"
                     className="w-full h-12 p-3 border-b border-gray-300 rounded mb-4 hover:border-blue-500 focus:border-blue-500"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
+                    value={userOTP}
+                    onChange={(e) => setUserOTP(e.target.value)}
                   />
                 </>
               )}
@@ -179,15 +179,11 @@ const Register = () => {
                 .
               </p>
               <button
-                className="w-full bg-orange-600 text-white font-normal py-3 mt-4 rounded hover:bg-orange-700 disabled:opacity-50"
-                onClick={handleContinueClick}
-                disabled={isLoading}
+                className="w-full bg-orange-600 text-white font-normal py-3 mt-4 rounded hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={handleRegister}
+                disabled={!isVerified}
               >
-                {isLoading
-                  ? "Processing..."
-                  : isOtpVisible
-                  ? "Register"
-                  : "Continue"}
+                {isLoading ? "Please wait..." : "Register"}
               </button>
               <Link to="/login">
                 <button className="w-full shadow-md bg-white text-blue-500 font-normal py-3 mt-4 rounded hover:bg-gray-50">

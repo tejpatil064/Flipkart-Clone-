@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify Your Flat-Finder Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .header img {
+            width: 100px;
+            margin-bottom: 15px;
+        }
+
+        .content {
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .verification-code {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+            padding: 10px;
+            border: 2px dashed #e74c3c;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://play-lh.googleusercontent.com/FA_rzaEeLlumm0qh68q3z5Pt-PGMVPf2Z28_pbega7SaXSiKjSzh-0MZceB3FpdvQIBq"
+                alt="Gamanika Logo" />
+            <h1>Flipkart</h1>
+        </div>
+        <div class="content">
+            <h1>Hello ,<%= name %>!!
+            </h1>
+            <h2>Your Verification Code</h2>
+            <p>
+                Please use the verification code below to complete your registration
+                or sign in.
+            </p>
+            <div class="verification-code">
+                <%= token %>
+            </div>
+            <p>If you didn't request this, please ignore this email.</p>
+            <p>
+                Thank you for choosing Flipkart. We appreciate your trust in our
+                services!
+            </p>
+        </div>
+        <div class="footer">
+            <p>Made with ♥ by NovaCops</p>
+            <p>
+                <img src="https://play-lh.googleusercontent.com/FA_rzaEeLlumm0qh68q3z5Pt-PGMVPf2Z28_pbega7SaXSiKjSzh-0MZceB3FpdvQIBq"
+                    alt="NovaCops" width="100" />
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

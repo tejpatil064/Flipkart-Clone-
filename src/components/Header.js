@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Search, ShoppingCart, StoreIcon, User } from "lucide-react";
-import flipkartLogo from "../images/flipkart.png";
 
 const Header = () => {
   return (
@@ -9,7 +8,7 @@ const Header = () => {
         {/* Logo with Text and Image */}
         <Link to="/" className="text-2xl font-bold flex items-center space-x-2">
           <span className="hidden sm:block text-2xl font-bold">Flipkart</span>
-          <img src={flipkartLogo} alt="Flipkart" className="h-8" />
+          <img src="/images/flipkart.png" alt="Flipkart" className="h-8" />
         </Link>
 
         {/* Desktop View with Search Bar and Text Links */}

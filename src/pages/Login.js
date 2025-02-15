@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Use useNavigate here
-import loginimage from "../images/loginimage.png";
 
 const Login = () => {
   const [emailAddress, setEmailAddress] = useState("");
@@ -10,7 +9,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [otpVerificationStatus, setOtpVerificationStatus] = useState(null);
 
-  const navigate = useNavigate(); // Use useNavigate instead of useHistory
+  const navigate = useNavigate();
 
   const mockDatabase = ["user1@example.com", "user2@example.com"]; // Mock email list
   const mockOtp = "1234"; // Mock OTP, this should come from the backend in real life
@@ -52,7 +51,7 @@ const Login = () => {
             </p>
             <div className="w-42 justify-end items-end mt-32 mb-16">
               <img
-                src={loginimage}
+                src="/images/loginimage.png"
                 alt="Login illustration"
                 className="w-full"
               />

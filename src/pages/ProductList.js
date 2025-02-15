@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import watch from "../images/watch.jpg";
 
 const ProductList = () => {
   const products = [
@@ -11,7 +10,7 @@ const ProductList = () => {
       oldPrice: 5999,
       discount: "82% off",
       badge: "Sponsored",
-      image: watch,
+      image: "/images/watch.jpg",
     },
     {
       id: 2,
@@ -61,7 +60,7 @@ const ProductList = () => {
               </span>
             )}
             <img
-              src={product.image || "/placeholder.svg"}
+              src={"/images/watch.jpg" || "/placeholder.svg"}
               alt={product.name}
               className="w-full h-56 object-cover mb-2"
             />

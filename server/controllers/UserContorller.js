@@ -1,5 +1,5 @@
 import { response } from "express";
-import User from "../models/user.model.js";
+import User from "./../model/User.js";
 
 // Signup Controller (without password)
 export async function Signup(req, res) {

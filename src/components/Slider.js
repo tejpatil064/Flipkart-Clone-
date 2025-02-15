@@ -1,20 +1,8 @@
 import React, { useState, useEffect } from "react";
-import sliderimage1 from "../images/silder1.jpg";
-import sliderimage2 from "../images/slider2.jpg";
-import sliderimage3 from "../images/slider 3.jpg";
-import sliderimage4 from "../images/slider 4.jpg";
-import sliderimage5 from "../images/slider 5.jpg";
 
 const Slider = () => {
-  const images = [
-    sliderimage1,
-    sliderimage2,
-    sliderimage3,
-    sliderimage4,
-    sliderimage5,
-  ];
-
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [images, setImages] = useState([1, 2, 3, 4]);
 
   useEffect(() => {
     const slideInterval = setInterval(() => {
@@ -39,10 +27,10 @@ const Slider = () => {
           className="flex transition-transform ease-in-out duration-500"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
-          {images.map((image, index) => (
+          {images.map((index) => (
             <img
               key={index}
-              src={image}
+              src={`images/slider${index + 1}.jpg`}
               alt={`Slide ${index + 1}`}
               className="w-full h-full object-cover"
             />

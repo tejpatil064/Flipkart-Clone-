@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Slider from "../../components/Slider";
+// import Slider from "../../components/Slider";
 
 const Home = () => {
   const categories = [
@@ -164,9 +165,8 @@ const Home = () => {
             ))}
           </div>
         </div>
+        <Slider />
       </div>
-
-      <Slider />
     </>
   );
 };
