@@ -43,7 +43,7 @@ const Header = () => {
           <Link to="/cart">
             <ShoppingCart className="text-white" />
           </Link>
-          <Link to="/cart">
+          <Link to="/SellerRegister">
             <StoreIcon className="text-white" />
           </Link>
         </div>

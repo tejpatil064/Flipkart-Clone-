@@ -1,48 +1,47 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Use useNavigate here
+import axios from "axios"; // Import axios to make API calls
 
 const Login = () => {
   const [emailAddress, setEmailAddress] = useState("");
-  const [otp, setOtp] = useState("");
-  const [isOtpVisible, setIsOtpVisible] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
+  const [password, setPassword] = useState(""); // Password state
   const [errorMessage, setErrorMessage] = useState("");
-  const [otpVerificationStatus, setOtpVerificationStatus] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const mockDatabase = ["user1@example.com", "user2@example.com"]; // Mock email list
-  const mockOtp = "1234"; // Mock OTP, this should come from the backend in real life
+  // Handle login form submission
+  const handleLogin = async () => {
+    setIsLoading(true);
+    setErrorMessage(""); // Clear previous errors
 
-  const handleRequestOtp = () => {
-    // Simulate checking email existence in the database
-    if (mockDatabase.includes(emailAddress)) {
-      setOtpSent(true);
-      setIsOtpVisible(true);
-      setErrorMessage("");
-    } else {
-      setErrorMessage("Email not registered.");
-      setOtpSent(false);
-      setIsOtpVisible(false);
-    }
-  };
+    try {
+      const response = await axios.post("http://localhost:3000/api/login", {
+        email: emailAddress,
+        password: password, // Send password to the backend
+      });
 
-  const handleOtpVerification = () => {
-    // Simulate OTP verification
-    if (otp === mockOtp) {
-      setOtpVerificationStatus("success");
-      navigate("/home"); // Use navigate to redirect to the home page
-    } else {
-      setOtpVerificationStatus("failed");
-      setErrorMessage("Incorrect OTP. Please try again.");
+      if (response.data.success) {
+        // Redirect on successful login
+        navigate("/home");
+      } else {
+        setErrorMessage(
+          response.data.message || "Login failed. Please try again."
+        );
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen flex-col ">
+    <div className="flex min-h-screen flex-col">
       {/* Main Container to Center the Form */}
-      <div className="flex flex-grow justify-center items-start py-2 px-6 mt-14 ">
-        <div className="flex w-full max-w-[800px] bg-white rounded-lg shadow-lg h-[70vh]">
+      <div className="flex flex-grow justify-center items-start py-2 px-6 mt-14">
+        <div className="flex w-full max-w-[800px] bg-white rounded-lg shadow-lg h-auto">
           {/* Left Section */}
           <div className="w-1/3 bg-blue-500 text-white flex flex-col justify-start items-start p-8">
             <h1 className="text-2xl font-bold mb-4">Login</h1>
@@ -72,21 +71,16 @@ const Login = () => {
                 onChange={(e) => setEmailAddress(e.target.value)} // Store entered email
               />
 
-              {/* Show OTP input if OTP is sent */}
-              {isOtpVisible && (
-                <>
-                  <h2 className="text-sm font-normal text-gray-500 mb-2">
-                    Enter OTP
-                  </h2>
-                  <input
-                    type="text"
-                    placeholder="Enter OTP"
-                    className="w-full h-12 p-3 border-b border-gray-300 rounded mb-4 hover:border-blue-500 focus:border-blue-500"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)} // Store entered OTP
-                  />
-                </>
-              )}
+              <h2 className="text-sm font-normal text-gray-500 mb-2">
+                Enter Password
+              </h2>
+              <input
+                type="password"
+                placeholder="Enter Password"
+                className="w-full h-12 p-3 border-b border-gray-300 rounded mb-4 hover:border-blue-500 focus:border-blue-500"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)} // Store entered password
+              />
 
               {/* Display error message */}
               {errorMessage && (
@@ -95,9 +89,10 @@ const Login = () => {
 
               <button
                 className="w-full bg-orange-600 text-white font-normal py-3 mt-4 rounded hover:bg-orange-600"
-                onClick={otpSent ? handleOtpVerification : handleRequestOtp}
+                onClick={handleLogin} // Handle login button click
+                disabled={isLoading} // Disable button when loading
               >
-                {otpSent ? "Verify OTP" : "Request OTP"}
+                {isLoading ? "Logging in..." : "Login"}
               </button>
 
               <Link to="/register">

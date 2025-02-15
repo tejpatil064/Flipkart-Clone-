@@ -1,10 +1,10 @@
-import { response } from "express";
+import bcrypt from "bcryptjs"; // Import bcrypt for hashing passwords
 import User from "./../model/User.js";
 
-// Signup Controller (without password)
+// Signup Controller (with password)
 export async function Signup(req, res) {
   try {
-    const { name, email, phone, address } = req.body;
+    const { name, email, phone, address, password } = req.body;
 
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
@@ -15,12 +15,16 @@ export async function Signup(req, res) {
         .json({ success: false, message: "Email already exists" });
     }
 
-    // Create a new user
+    // Hash the password before saving it
+    const hashedPassword = await bcrypt.hash(password, 10); // 10 is the saltRounds
+
+    // Create a new user with hashed password
     const user = await User.create({
       name,
       email,
       phone,
       address,
+      password: hashedPassword, // Store the hashed password
     });
 
     res.status(200).json({
@@ -37,23 +41,12 @@ export async function Signup(req, res) {
   }
 }
 
-// Login Controller (without password, using OTP)
+// Login Controller (with password)
 export async function Login(req, res) {
   try {
-    const { email, otp } = req.body;
+    const { email, password } = req.body;
 
-    // In a real-world scenario, you'd verify the OTP with some OTP service
-    // For simplicity, assuming a mock OTP comparison
-    const mockOtp = "1234"; // This would come from your OTP service
-
-    if (otp !== mockOtp) {
-      return res.status(401).json({
-        success: false,
-        message: "Incorrect OTP",
-      });
-    }
-
-    // Check if user exists in the database
+    // Check if the user exists in the database
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({
@@ -62,7 +55,17 @@ export async function Login(req, res) {
       });
     }
 
-    // Return user data (after OTP validation)
+    // Compare the hashed password with the input password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect password",
+      });
+    }
+
+    // Return user data (after password validation)
     return res.status(200).json({
       success: true,
       message: "User logged in successfully",

@@ -2,15 +2,14 @@ import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Register = () => {
+const SellerRegister = () => {
   const [isVerified, setIsVerified] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
-    address: "",
+    phoneNumber:"",
+    shopName:"",
     password: "",
-    confirmPassword: "", // added confirm password
   });
   const [otp, setOtp] = useState("");
   const [userOTP, setUserOTP] = useState("");
@@ -49,6 +48,7 @@ const Register = () => {
       if (response.data.success) {
         setSuccess("OTP sent successfully. Please check your email.");
         setOtp(response.data.otp);
+        // Instead of document.getElementById, use React state to manage modal
         setIsVerified(true); // Reset isVerified in case the user needs to input OTP again
       } else {
         setError("Failed to send OTP. Please try again.");
@@ -74,41 +74,20 @@ const Register = () => {
       setError("Please enter the OTP");
       return;
     }
+    console.log(otp, userOTP);
     if (otp != userOTP) {
       setError("Invalid OTP. Please try again.");
       return;
     }
 
-    // Password validation
-    if (!formData.password) {
-      setError("Please enter a password");
-      return;
-    }
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
+    setIsVerified(true);
     setIsLoading(true);
     setError(null);
     setSuccess(null);
 
     try {
-      const response = await axios.post("http://localhost:3000/api/signup", {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        address: formData.address,
-        password: formData.password, // Send password to the backend
-      });
-
-      if (response.data.success) {
-        setSuccess("User registered successfully!");
-      } else {
-        setError(
-          response.data.message || "Registration failed. Please try again."
-        );
-      }
+      // You can now add the registration logic here, such as sending form data to the backend.
+      // For example, POST the form data along with the OTP for final verification.
     } catch (err) {
       setError("Registration failed. Please try again.");
     } finally {
@@ -158,58 +137,10 @@ const Register = () => {
               <input
                 type="email"
                 placeholder="Enter Email address"
-                className="w-full h-12 p-3 border-b border-gray-300 rounded mb-4 hover:border-blue-500 focus:border-blue-500"
+                className="w-full h-12 p-3 border-b border-gray-300 rounded hover:border-blue-500 focus:border-blue-500"
                 value={formData.email}
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
-                }
-              />
-              <h2 className="text-sm font-normal text-gray-500 mb-2">
-                Enter Phone Number
-              </h2>
-              <input
-                type="text"
-                placeholder="Enter Phone Number"
-                className="w-full h-12 p-3 border-b border-gray-300 rounded mb-4 hover:border-blue-500 focus:border-blue-500"
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
-              />
-              <h2 className="text-sm font-normal text-gray-500 mb-2">
-                Enter Address
-              </h2>
-              <input
-                type="text"
-                placeholder="Enter Address"
-                className="w-full h-12 p-3 border-b border-gray-300 rounded mb-4 hover:border-blue-500 focus:border-blue-500"
-                value={formData.address}
-                onChange={(e) =>
-                  setFormData({ ...formData, address: e.target.value })
-                }
-              />
-              <h2 className="text-sm font-normal text-gray-500 mb-2">
-                Enter Password
-              </h2>
-              <input
-                type="password"
-                placeholder="Enter Password"
-                className="w-full h-12 p-3 border-b border-gray-300 rounded mb-4 hover:border-blue-500 focus:border-blue-500"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-              />
-              <h2 className="text-sm font-normal text-gray-500 mb-2">
-                Confirm Password
-              </h2>
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                className="w-full h-12 p-3 border-b border-gray-300 rounded mb-4 hover:border-blue-500 focus:border-blue-500"
-                value={formData.confirmPassword}
-                onChange={(e) =>
-                  setFormData({ ...formData, confirmPassword: e.target.value })
                 }
               />
               <div className="flex items-center justify-between mt-4">
@@ -269,4 +200,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default SellerRegister;
