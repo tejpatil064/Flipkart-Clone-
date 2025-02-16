@@ -2,6 +2,7 @@ import Express from "express";
 import dotenv from "dotenv";
 import dbConnect from "./config/db.js";
 import userRoute from "./routes/userRoute.js";
+import sellerRoute from "./routes/sellerRoute.js";
 import nodemailer from "nodemailer";
 import fs from "fs";
 import ejs from "ejs";
@@ -35,6 +36,7 @@ app.use(Express.json());
 
 // Routes
 app.use("/api", userRoute);
+app.use("/api", sellerRoute);
 
 // OTP request route
 app.use("/api/request-otp", async (req, res) => {

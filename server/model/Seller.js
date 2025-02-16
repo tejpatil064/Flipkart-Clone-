@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const SellerSchema = new mongoose.Schema(
   {
     name: {
@@ -18,10 +19,19 @@ const SellerSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-    }
+    },
+    role:{
+      type: String,
+      default: "seller",
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
+
 
 const Seller = mongoose.model("Seller", SellerSchema);
 export default Seller;

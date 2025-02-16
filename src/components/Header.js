@@ -29,7 +29,7 @@ const Header = () => {
             <ShoppingCart className="mr-1" />
             Cart
           </Link>
-          <Link to="/cart" className="flex items-center">
+          <Link to="/sellerRegister" className="flex items-center">
             <StoreIcon className="mr-1" />
             Become a Seller
           </Link>
@@ -43,7 +43,7 @@ const Header = () => {
           <Link to="/cart">
             <ShoppingCart className="text-white" />
           </Link>
-          <Link to="/SellerRegister">
+          <Link to="/sellerRegister">
             <StoreIcon className="text-white" />
           </Link>
         </div>

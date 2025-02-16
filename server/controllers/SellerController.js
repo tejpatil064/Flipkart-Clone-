@@ -1,10 +1,10 @@
-import Seller from "../models/seller.model.js";
-import { generateOtp, sendOtp } from "../utils/otpUtils.js"; // You may implement OTP generation and sending separately
+import Seller from "../model/Seller.js";
 
-// Create a new seller
+// Create a new seller (with password)
 export async function createSeller(req, res) {
   try {
-    const { name, shopName, phoneNumber, email } = req.body;
+    console.log(req.body);
+    const { name, shopName, phoneNumber, email, password } = req.body;
 
     // Check if seller already exists
     const existingSeller = await Seller.findOne({ email });
@@ -16,18 +16,21 @@ export async function createSeller(req, res) {
       });
     }
 
-    // Create a new seller
+    // Create a new seller with password (no hashing)
     const seller = await Seller.create({
       name,
       shopName,
+      role: "seller",
       phoneNumber,
       email,
+      password, // Plaintext password (no hashing)
     });
 
     return res.status(201).json({
       success: true,
       message: "Seller created successfully",
       seller,
+      route: "/seller/sellerlogin",
     });
   } catch (error) {
     console.error(error);
@@ -38,10 +41,10 @@ export async function createSeller(req, res) {
   }
 }
 
-// Seller Login (Simulate login with OTP)
+// Seller Login (using email and password)
 export async function sellerLogin(req, res) {
   try {
-    const { email } = req.body;
+    const { email, password } = req.body; // Receive email and password
 
     const seller = await Seller.findOne({ email });
 
@@ -52,16 +55,22 @@ export async function sellerLogin(req, res) {
       });
     }
 
-    // Generate OTP for login
-    const otp = generateOtp();
+    // Compare the entered password with the stored plain password
+    if (seller.password !== password) {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect password",
+      });
+    }
 
-    // Send OTP (using an email service or some other method)
-    await sendOtp(seller.email, otp);
-
+    // Successful login (you can generate a JWT token here if needed)
+    console.log(seller);
+    console.log("Seller logged in successfully");
     return res.status(200).json({
       success: true,
-      message: "OTP sent to your email",
-      otp, // For testing purposes; In real applications, do not send OTP in the response.
+      message: "Seller logged in successfully",
+      seller: seller,
+      route: "/seller/dashboard", // You can change the route if needed
     });
   } catch (error) {
     console.error(error);
@@ -72,7 +81,7 @@ export async function sellerLogin(req, res) {
   }
 }
 
-// Verify Seller OTP for login
+// Verify Seller OTP for login (Remove this, if not using OTP)
 export async function verifySellerOtp(req, res) {
   try {
     const { email, otp, generatedOtp } = req.body; // OTP should be generated and stored securely (e.g., in a session)
@@ -147,12 +156,12 @@ export async function getSellerById(req, res) {
 export async function updateSeller(req, res) {
   try {
     const { id } = req.params;
-    const { name, shopName, phoneNumber, email } = req.body;
+    const { name, shopName, phoneNumber, email, password } = req.body;
 
     // Find the seller by ID and update
     const seller = await Seller.findByIdAndUpdate(
       id,
-      { name, shopName, phoneNumber, email },
+      { name, shopName, phoneNumber, email, password },
       { new: true } // Returns the updated document
     );
 

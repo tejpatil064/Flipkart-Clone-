@@ -7,6 +7,7 @@ import ProductList from "./pages/ProductList.js";
 import ProductDetails from "./pages/ProductDetails.js";
 import Home from "./pages/Home/index.jsx";
 import SellerRegister from "./seller/SellerRegister.js";
+import SellerLogin from "./seller/SelllerLogin.js";
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/products" element={<ProductList />} />
             <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/sellerRegister" element={<SellerRegister/>} />
+            <Route path="/sellerRegister" element={<SellerRegister />} />
+            <Route path="/sellerLogin" element={<SellerLogin />} />
           </Routes>
           <Footer />
         </div>

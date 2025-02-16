@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Use useNavigate here
 import axios from "axios"; // Import axios to make API calls
 
-const Login = () => {
+const SellerLogin = () => {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState(""); // Password state
   const [errorMessage, setErrorMessage] = useState("");
@@ -16,10 +16,13 @@ const Login = () => {
     setErrorMessage(""); // Clear previous errors
 
     try {
-      const response = await axios.post("http://localhost:3000/api/login", {
-        email: emailAddress,
-        password: password, // Send password to the backend
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/sellerlogin",
+        {
+          email: emailAddress,
+          password: password, // Send password to the backend
+        }
+      );
 
       if (response.data.success) {
         // Redirect on successful login
@@ -44,9 +47,9 @@ const Login = () => {
         <div className="flex w-full max-w-[800px] bg-white rounded-lg shadow-lg h-auto">
           {/* Left Section */}
           <div className="w-1/3 bg-blue-500 text-white flex flex-col justify-start items-start p-8">
-            <h1 className="text-2xl font-bold mb-4">Login</h1>
+            <h1 className="text-2xl font-bold mb-4">Seller Login</h1>
             <p className="text-sm mb-8">
-              Get access to your Orders, Wishlist, and Recommendations
+              Get access to your  Sells, Orders and Delivery
             </p>
             <div className="w-42 justify-end items-end mt-32 mb-16">
               <img
@@ -95,7 +98,7 @@ const Login = () => {
                 {isLoading ? "Logging in..." : "Login"}
               </button>
 
-              <Link to="/register">
+              <Link to="/sellerRegister">
                 <button className="w-full bg-white text-blue-500 font-normal py-3 mt-44 rounded">
                   New to Flipkart? Create an account
                 </button>
@@ -108,4 +111,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SellerLogin;

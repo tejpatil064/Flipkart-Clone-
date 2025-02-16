@@ -23,6 +23,7 @@ export async function Signup(req, res) {
       name,
       email,
       phone,
+      role: "user",
       address,
       password: hashedPassword, // Store the hashed password
     });
@@ -31,6 +32,7 @@ export async function Signup(req, res) {
       success: true,
       message: "User created successfully",
       user: user,
+      route: "/user/dashboard",
     });
   } catch (error) {
     console.error(error);
@@ -54,8 +56,10 @@ export async function Login(req, res) {
         message: "User not found",
       });
     }
-
+    console.log(user);
     // Compare the hashed password with the input password
+    console.log(user.password);
+    console.log(password);
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -70,6 +74,7 @@ export async function Login(req, res) {
       success: true,
       message: "User logged in successfully",
       user: user,
+      route: "/user/dashboard",
     });
   } catch (error) {
     console.error(error);
