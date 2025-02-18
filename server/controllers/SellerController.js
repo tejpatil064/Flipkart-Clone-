@@ -15,8 +15,7 @@ export async function createSeller(req, res) {
         message: "Seller with this email already exists",
       });
     }
-
-    // Create a new seller with password (no hashing)
+    
     const seller = await Seller.create({
       name,
       shopName,

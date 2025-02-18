@@ -1,12 +1,16 @@
+import React from "react";
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, StoreIcon, UserCircle } from "lucide-react";
+import { LogOutIcon, PlusCircleIcon, Search } from "lucide-react";
 
-const Header = () => {
+const SellerHeader = () => {
   return (
     <header className="bg-blue-600 text-white py-4 px-4 h-16">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo with Text and Image */}
-        <Link to="/" className="text-2xl font-bold flex items-center space-x-2">
+        <Link
+          to="/sellerhomepage"
+          className="text-2xl font-bold flex items-center space-x-2"
+        >
           <span className="hidden sm:block text-2xl font-bold">Flipkart</span>
           <img src="/images/flipkart.png" alt="Flipkart" className="h-8" />
         </Link>
@@ -21,30 +25,23 @@ const Header = () => {
             />
             <Search className="absolute right-3 top-1.5 text-blue-400" />
           </div>
-          <Link to="/login" className="flex items-center">
-            <UserCircle className="mr-1" />
-            Login
+          <Link to="/addproduct" className="flex items-center">
+            <PlusCircleIcon className="mr-1" />
+            Add Product
           </Link>
-          <Link to="/cart" className="flex items-center">
-            <ShoppingCart className="mr-1" />
-            Cart
-          </Link>
-          <Link to="/sellerRegister" className="flex items-center">
-            <StoreIcon className="mr-1" />
-            Become a Seller
+          <Link to="/" className="flex items-center">
+            <LogOutIcon className="mr-1" />
+            Log out {/* Display the fetched name */}
           </Link>
         </div>
 
         {/* Mobile View with Only Icons */}
         <div className="sm:hidden flex items-center space-x-6">
-          <Link to="/login">
-            <UserCircle className="text-white" />
+          <Link to="/addproduct">
+            <PlusCircleIcon className="text-white" />
           </Link>
-          <Link to="/cart">
-            <ShoppingCart className="text-white" />
-          </Link>
-          <Link to="/sellerRegister">
-            <StoreIcon className="text-white" />
+          <Link to="/">
+            <LogOutIcon className="text-white" />
           </Link>
         </div>
       </div>
@@ -52,4 +49,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default SellerHeader;

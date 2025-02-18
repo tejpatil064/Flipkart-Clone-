@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Slider from "../../components/Slider";
-// import Slider from "../../components/Slider";
+import ProductList from "../../pages/ProductList";
+import Slider from "../Slider";
 
-const Home = () => {
+export const Hero = () => {
   const categories = [
     {
       id: 1,
@@ -120,55 +120,51 @@ const Home = () => {
   const handleMouseLeave = () => {
     setActiveCategory(null);
   };
-
   return (
-    <>
-      <div className="py-1.5 w-full">
-        <div className="bg-white shadow-sm p-6 px-20 w-full">
-          <div className="grid grid-cols-2  sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-2 w-full h-26">
-            {categories.map((category) => (
-              <div
-                key={category.id}
-                className="relative"
-                onMouseEnter={() => handleMouseEnter(category.name)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <button className="block text-center items-center focus:outline-none hover:text-blue-500">
-                  <img
-                    src={category.image || "/placeholder.svg"}
-                    alt={category.name}
-                    className="w-18 h-16 object-cover rounded-lg mb-2  mx-auto"
-                  />
-                  <h2 className="text-sm font-semibold hover:text-blue-400">
-                    {category.name}
-                  </h2>
-                </button>
+    <div className="py-1.5 w-full">
+      <div className="bg-white shadow-sm p-6 px-20 w-full">
+        <div className="grid grid-cols-2  sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-2 w-full h-26">
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              className="relative"
+              onMouseEnter={() => handleMouseEnter(category.name)}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button className="block text-center items-center focus:outline-none hover:text-blue-500">
+                <img
+                  src={category.image || "/placeholder.svg"}
+                  alt={category.name}
+                  className="w-18 h-16 object-cover rounded-lg mb-2  mx-auto"
+                />
+                <h2 className="text-sm font-semibold hover:text-blue-400">
+                  {category.name}
+                </h2>
+              </button>
 
-                {/* Dropdown */}
-                {activeCategory === category.name && category.subcategories && (
-                  <div className="absolute top-24 left-0 bg-white shadow-lg rounded-sm p-4 w-48 z-10">
-                    <ul className="space-y-3">
-                      {category.subcategories.map((subcategory, index) => (
-                        <li key={index}>
-                          <Link
-                            to={`/products?category=${category.name}&subcategory=${subcategory}`}
-                            className="block text-sm text-gray-700 hover:text-blue-500"
-                          >
-                            {subcategory}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+              {/* Dropdown */}
+              {activeCategory === category.name && category.subcategories && (
+                <div className="absolute top-24 left-0 bg-white shadow-lg rounded-sm p-4 w-48 z-10">
+                  <ul className="space-y-3">
+                    {category.subcategories.map((subcategory, index) => (
+                      <li key={index}>
+                        <Link
+                          to={`/products?category=${category.name}&subcategory=${subcategory}`}
+                          className="block text-sm text-gray-700 hover:text-blue-500"
+                        >
+                          {subcategory}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-        <Slider />
       </div>
-    </>
+      <Slider />
+      <ProductList />
+    </div>
   );
 };
-
-export default Home;

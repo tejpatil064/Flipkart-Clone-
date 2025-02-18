@@ -1,7 +1,36 @@
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, StoreIcon, UserCircle } from "lucide-react";
+import { Search, ShoppingCart, StoreIcon, User } from "lucide-react";
 
-const Header = () => {
+const UserHeader = () => {
+  const [userName, setUserName] = useState(null);
+
+  // Fetch user details from the backend (once the user is logged in)
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("/api/userProfile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // Add your authorization token or cookies here if needed
+          },
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          setUserName(data.user.name); // Set the logged-in user's name
+        } else {
+          console.error(data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <header className="bg-blue-600 text-white py-4 px-4 h-16">
       <div className="container mx-auto flex items-center justify-between">
@@ -21,10 +50,12 @@ const Header = () => {
             />
             <Search className="absolute right-3 top-1.5 text-blue-400" />
           </div>
-          <Link to="/login" className="flex items-center">
-            <UserCircle className="mr-1" />
-            Login
-          </Link>
+          {userName && (
+            <Link to="/login" className="flex items-center">
+              <User className="mr-1" />
+               Profile {userName} {/* Display the fetched name */}
+            </Link>
+          )}
           <Link to="/cart" className="flex items-center">
             <ShoppingCart className="mr-1" />
             Cart
@@ -38,7 +69,7 @@ const Header = () => {
         {/* Mobile View with Only Icons */}
         <div className="sm:hidden flex items-center space-x-6">
           <Link to="/login">
-            <UserCircle className="text-white" />
+            <User className="text-white" />
           </Link>
           <Link to="/cart">
             <ShoppingCart className="text-white" />
@@ -52,4 +83,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default UserHeader;
