@@ -36,7 +36,7 @@ const ProductList = () => {
                   className="w-full h-56 object-cover mb-2"
                 />
                 <h2 className="text-sm font-semibold mb-1 truncate">
-                  {product.name}
+                  {product.title}
                 </h2>
                 <p className="text-xs text-gray-600 mb-2">
                   {product.description}

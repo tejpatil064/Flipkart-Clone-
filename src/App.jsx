@@ -11,6 +11,7 @@ import UserHomePage from "./user/UserHomePage.js";
 import { SellerHomePage } from "./seller/SellerHomePage.js";
 import Cart from "./pages/Cart.js";
 import { Home } from "./views/Home/index.jsx";
+import CheckoutPage from "./pages/CheckoutPage.js";
 function App() {
   return (
     <BrowserRouter>
@@ -26,6 +27,7 @@ function App() {
         <Route path="/userhomepage" element={<UserHomePage />} />
         <Route path="/seller/dashboard" element={<SellerHomePage />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<CheckoutPage/>}/>
       </Routes>
     </BrowserRouter>
   );
