@@ -1,17 +1,27 @@
 import { useParams } from "react-router-dom";
 import { ShoppingBag, ShoppingCart, Star, TagIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import axios from "axios";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const [product,setProduct] = useState();
+  const [product, setProduct] = useState();
   // Product details
-
+  useEffect(() => {
+    fetchProductDetails();
+  }, []);
+  const fetchProductDetails = async () => {
+    const response = await axios.get(
+      `http://localhost:3000/api/getProductById/${id}`
+    );
+    console.log(response.data.product);
+    setProduct(response.data.product);
+  };
 
   // State to manage the main image, initialized to the first image in the array
-  const [mainImage, setMainImage] = useState(product.images[0]);
+  const [mainImage, setMainImage] = useState(product?.images[0]);
 
   // Handle image click to change the main image
   const handleImageClick = (image) => {
@@ -20,14 +30,14 @@ const ProductDetails = () => {
 
   return (
     <>
-    <Header/>
+      <Header />
       <div className="container mx-auto py-2">
         <div className="bg-white p-8">
           <div className="flex gap-8">
             <div className="flex gap-8">
               {/* Left column with smaller images */}
               <div className="flex flex-col gap-4 h-20 w-20">
-                {product.images.map((img, index) => (
+                {product?.images?.map((img, index) => (
                   <img
                     key={index}
                     src={img || "/placeholder.svg"}
@@ -42,7 +52,7 @@ const ProductDetails = () => {
               <div className="w-3/4">
                 <img
                   src={mainImage || "/placeholder.svg"} // Display the current main image
-                  alt={product.name}
+                  alt={product?.title}
                   className="w-80 h-80 rounded-sm object-cover"
                 />
               </div>
@@ -50,10 +60,10 @@ const ProductDetails = () => {
 
             {/* Product Details */}
             <div className="w-1/2">
-              <h1 className="text-xl font-medium mb-2">{product.name}</h1>
+              <h1 className="text-xl font-medium mb-2">{product?.title}</h1>
               <div className="flex items-center mb-4 text-xs">
                 <span className="bg-green-500 text-white px-1 py-1 rounded-md flex items-center mr-2">
-                  {product.rating} <Star className="ml-1 w-3 h-3" />
+                  {product?.rating} <Star className="ml-1 w-3 h-3" />
                 </span>
                 <span className="text-gray-500 text-sm font-medium">
                   1000+ ratings & 2000 reviews
@@ -65,17 +75,20 @@ const ProductDetails = () => {
               </div>
               <div className="flex items-baseline">
                 <p className="text-2xl font-medium text-green-600 mr-1">
-                  ₹{product.final_price} {/* Final price */}
+                  ₹{product?.price.final_price} {/* Final price */}
                 </p>
                 <p className="text-lg font-normal text-gray-500 line-through mx-1">
-                  ₹{product.price} {/* Original price with strike-through */}
+                  ₹{product?.price.amount}{" "}
+                  {/* Original price with strike-through */}
                 </p>
                 <span className="mx-1 text-green-600 text-md font-medium">
-                  {product.discount} OFF
+                  {product?.price.discount} OFF
                 </span>
               </div>
 
-              <p className="mb-4 text-sm font-normal">{product.delivery}</p>
+              <p className="mb-4 text-sm font-normal">
+                Delivery upto {new Date().now}
+              </p>
 
               <div className="items-center space-y-1 mb-4">
                 <div className="flex items-center space-x-2">
@@ -115,7 +128,7 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };

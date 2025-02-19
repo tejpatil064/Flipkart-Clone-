@@ -59,7 +59,7 @@ export async function getProductById(req, res) {
   try {
     const { productid } = req.params;
 
-    const product = await Product.findOne({ productid });
+    const product = await Product.findOne({ _id: productid });
     if (!product) {
       return res.status(404).json({
         success: false,
