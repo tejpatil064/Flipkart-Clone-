@@ -5,7 +5,7 @@ import Header from "../components/Header";
 const CheckoutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState(1);
   const [showAddAddressForm, setShowAddAddressForm] = useState(false);
-
+  const [showPaymentSection, setShowPaymentSection] = useState(false); 
   const addresses = [
     {
       id: 1,
@@ -27,7 +27,7 @@ const CheckoutPage = () => {
 
   return (
     <>
-    <Header/>
+      <Header />
       <div className="p-4">
         {/* Main Content */}
         <div className="flex flex-col mx-20 md:flex-row gap-6">
@@ -76,7 +76,10 @@ const CheckoutPage = () => {
                             {address.address}
                           </p>
                           {selectedAddress === address.id && (
-                            <button className="bg-orange-500 text-white px-4 py-2 rounded mt-2">
+                            <button
+                              className="bg-orange-500 text-white px-4 py-2 rounded mt-2"
+                              onClick={() => setShowPaymentSection(true)} // Show payment section
+                            >
                               DELIVER HERE
                             </button>
                           )}
@@ -168,6 +171,30 @@ const CheckoutPage = () => {
                 </div>
               )}
             </div>
+
+            {/* Payment Section */}
+            {showPaymentSection && (
+              <div className="bg-white shadow rounded p-4 mb-4">
+                <h2 className="font-medium text-base">3. PAYMENT</h2>
+                <div className="space-y-4">
+                  <label className="flex items-center gap-2">
+                    <input type="radio" name="paymentMethod" />
+                    Credit/Debit Card
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input type="radio" name="paymentMethod" />
+                    UPI
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input type="radio" name="paymentMethod" />
+                    Cash on Delivery
+                  </label>
+                  <button className="bg-green-500 text-white px-4 py-2 rounded mt-4">
+                    PLACE ORDER
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right Section */}
@@ -191,7 +218,7 @@ const CheckoutPage = () => {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };
