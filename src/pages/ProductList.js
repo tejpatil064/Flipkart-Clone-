@@ -35,21 +35,21 @@ const ProductList = () => {
                   alt={product.name}
                   className="w-full h-56 object-cover mb-2"
                 />
-                <h2 className="text-sm font-semibold mb-1 truncate">
+                <h2 className="text-sm font-normal mb-1 truncate ">
                   {product.title}
                 </h2>
                 <p className="text-xs text-gray-600 mb-2">
                   {product.description}
                 </p>
-                <div className="text-base mb-1">
+                <div className="text-sm mb-1">
                   <span className="text-black-600 font-bold">
                     ₹{product.price.final_price}
                   </span>
-                  <span className="line-through text-gray-500 ml-2">
+                  <span className="line-through text-xs text-gray-500 ml-2">
                     ₹{product.price.amount}
                   </span>
-                  <span className="text-sm text-green-600 font-semibold ml-2">
-                    {product.price.discount}
+                  <span className="text-xs text-green-600 font-semibold ml-2">
+                    {product.price.discount}% off
                   </span>
                 </div>
                 <p className="text-xs text-blue-500">
@@ -58,7 +58,9 @@ const ProductList = () => {
               </Link>
             ))
           ) : (
-            <>Chud gaye guru product nahi hai</>
+            <div className="text-base align-middle items-center">
+              Product Not Found
+            </div>
           )}
         </div>
       </div>
