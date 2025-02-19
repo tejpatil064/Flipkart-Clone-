@@ -28,7 +28,7 @@ const AddProduct = () => {
   const [subcategories, setSubcategories] = useState([]);
 
   const categoriesMap = {
-    electronics: [
+    Electronics: [
       "Audio",
       "Cameras & Accessories",
       "Computer Peripherals",
@@ -42,9 +42,9 @@ const AddProduct = () => {
       "Storage",
       "Tablets",
     ],
-    mobile: ["Smartphones", "Feature Phones", "Mobile Accessories"],
-    kilos: ["Grocery", "Fruits & Vegetables", "Meat & Fish", "Dairy"],
-    fashion: [
+    Mobile: ["Smartphones", "Feature Phones", "Mobile Accessories"],
+    Kilos: ["Grocery", "Fruits & Vegetables", "Meat & Fish", "Dairy"],
+    Fashion: [
       "Men's Top Wear",
       "Men's Bottom Wear",
       "Women Ethnic Wear",
